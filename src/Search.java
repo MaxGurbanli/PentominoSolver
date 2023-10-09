@@ -10,11 +10,10 @@
  */
 public class Search
 {
-    public static final int horizontalGridSize = 12;
-    public static final int verticalGridSize = 5;
+    public static final int horizontalGridSize = 5;
+    public static final int verticalGridSize = 6;
     
-    // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F', 'P', 'V'};
-	public static final char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I'};
+    public static final char[] input = { 'W', 'T', 'Z', 'I', 'L', 'Y'};
 
     
     //Static UI class to display the board
