@@ -11,9 +11,11 @@
 public class Search
 {
     public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 6;
+    public static final int verticalGridSize = 12;
     
-    public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L'};
+    // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F', 'P', 'V'};
+	public static final char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I'};
+
     
     //Static UI class to display the board
     public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
@@ -86,6 +88,7 @@ public class Search
     	boolean solutionFound = false;
     	
     	while (!solutionFound) {
+			System.out.println("Searching for a solution...");
     		solutionFound = true;
     		
     		//Empty board again to find a solution
@@ -134,12 +137,15 @@ public class Search
 	    		} 
     		}
     		//Check whether complete field is filled
-    		//
-    		//
-    		// TODO: To be implemented
-    		//
-    		//
-    		
+
+			// draft 1
+			for (int i = 0; i < field.length; i++) {
+				for (int j = 0; j < field[i].length; j++) {
+					if (field[i][j] == -1) {
+						solutionFound = false;
+					}
+				}
+			}
 
     		
     		if (solutionFound) {
