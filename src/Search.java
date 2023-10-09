@@ -10,8 +10,8 @@
  */
 public class Search
 {
-    public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 12;
+    public static final int horizontalGridSize = 12;
+    public static final int verticalGridSize = 5;
     
     // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F', 'P', 'V'};
 	public static final char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I'};
@@ -86,8 +86,9 @@ public class Search
     private static void basicSearch(int[][] field){
     	Random random = new Random();
     	boolean solutionFound = false;
-    	
+		int count = 0;
     	while (!solutionFound) {
+			System.out.println(count++);
     		solutionFound = true;
     		
     		//Empty board again to find a solution
