@@ -15,6 +15,7 @@ of pentominoes to maximize space utilization.
 ## Authors
 
 - Pablo Arranz Garcia
+- Max Gurbanli
 - Magdy Fares
 - Ilya Stetsenko
 - David Henry Francis Wicker
