@@ -88,7 +88,6 @@ public class Search
     	boolean solutionFound = false;
     	
     	while (!solutionFound) {
-			System.out.println("Searching for a solution...");
     		solutionFound = true;
     		
     		//Empty board again to find a solution
