@@ -8,11 +8,11 @@
  */
 public class Search
 {
-    public static final int horizontalGridSize = 11;
-    public static final int verticalGridSize = 5;
+    public static final int horizontalGridSize = 5;
+    public static final int verticalGridSize = 10;
 
 	// 1 of each pentomino letter
-    public static final char[] input = { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'F'};
+    public static final char[] input = { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'F'};
 
     
     //Static UI class to display the board
@@ -28,7 +28,7 @@ public class Search
                 field[i][j] = -1;
             }
         }
-        if (backtrackSearch(field, 0)) {
+        if (backtrackSearch(field, 0, ui)) {
             ui.setState(field);
             System.out.println("Solution found");
         } else {
@@ -36,7 +36,7 @@ public class Search
         }
     }
 
-    private static boolean backtrackSearch(int[][] field, int pentominoIndex) {
+    private static boolean backtrackSearch(int[][] field, int pentominoIndex, UI ui) {
         if (pentominoIndex == input.length) {
             return true;  // All pentominoes have been placed successfully
         }
@@ -48,7 +48,8 @@ public class Search
                 for (int y = 0; y <= verticalGridSize - pieceToPlace[0].length; y++) {
                     if (canPlace(field, pieceToPlace, x, y)) {
                         addPiece(field, pieceToPlace, pentID, x, y);
-                        if (backtrackSearch(field, pentominoIndex + 1)) {
+                        ui.setState(field);
+                        if (backtrackSearch(field, pentominoIndex + 1, ui)) {
                             return true;  // Found a solution
                         }
                         removePiece(field, pieceToPlace, x, y);  // Backtrack
