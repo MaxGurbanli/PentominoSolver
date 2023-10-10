@@ -1,6 +1,6 @@
 # Pentominoes (Group 7)
 
-> Group 7, Phase 1
+> Group 7, Phase 1, Version 0
 
 ## Purpose of the project
 
@@ -11,6 +11,10 @@ tation of a computer program using Java. The program's core functionality involv
 ulating a predefined rectangular space with specific objects known as pentominoes. The
 initial phase of the project aims to create efficient algorithms that can arrange a given set
 of pentominoes to maximize space utilization.
+
+## Running the project and contributing
+
+- [ ] Complete this section
 
 ## Authors
 
@@ -29,3 +33,28 @@ Link to the task issue board: [Task Board](https://gitlab.maastrichtuniversity.n
 ## Tasks & ideas log
 
 -
+
+## Pentominoes Database
+
+Each line in the CSV file defines one permutation of a pentomino.
+
+- First number is the ID for a pentomino, from 0 to 11.
+- Second number is the index of the permutation (rotation, flip, etc.), between 0 to 7.
+- Numbers three and four are the X and Y sizes respectively.
+- The following X\*Y numbers are a matrix showing which positions in the grid are occupied or empty (defined by the shape of the pentomino).
+
+This file does not contain a header.
+The pentominoes should be sorted by ID in increasing order
+
+EXAMPLE:
+
+2,1,3,3,1,0,0,1,1,1,0,0,1
+
+ID: 2
+Permutation: 1
+X: 3 squares
+Y: 3 squares
+Shape:
+X 0 0
+X X X
+0 0 X
