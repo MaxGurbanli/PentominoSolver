@@ -3,17 +3,16 @@
  * @version 2022.0
  */
 
- import java.util.Random;
-
 /**
  * This class includes the methods to support the search of a solution.
  */
 public class Search
 {
-    public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 6;
-    
-    public static final char[] input = { 'W', 'T', 'Z', 'I', 'L', 'Y'};
+    public static final int horizontalGridSize = 11;
+    public static final int verticalGridSize = 5;
+
+	// 1 of each pentomino letter
+    public static final char[] input = { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'F'};
 
     
     //Static UI class to display the board
@@ -22,22 +21,63 @@ public class Search
 	/**
 	 * Helper function which starts a basic search algorithm
 	 */
-    public static void search()
-    {
-        // Initialize an empty board
+    public static void search() {
         int[][] field = new int[horizontalGridSize][verticalGridSize];
-
-        for(int i = 0; i < field.length; i++)
-        {
-            for(int j = 0; j < field[i].length; j++)
-            {
-                // -1 in the state matrix corresponds to empty square
-                // Any positive number identifies the ID of the pentomino
-            	field[i][j] = -1;
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                field[i][j] = -1;
             }
         }
-        //Start the basic search
-        basicSearch(field);
+        if (backtrackSearch(field, 0)) {
+            ui.setState(field);
+            System.out.println("Solution found");
+        } else {
+            System.out.println("No solution found");
+        }
+    }
+
+    private static boolean backtrackSearch(int[][] field, int pentominoIndex) {
+        if (pentominoIndex == input.length) {
+            return true;  // All pentominoes have been placed successfully
+        }
+
+        int pentID = characterToID(input[pentominoIndex]);
+        for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
+            int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
+            for (int x = 0; x <= horizontalGridSize - pieceToPlace.length; x++) {
+                for (int y = 0; y <= verticalGridSize - pieceToPlace[0].length; y++) {
+                    if (canPlace(field, pieceToPlace, x, y)) {
+                        addPiece(field, pieceToPlace, pentID, x, y);
+                        if (backtrackSearch(field, pentominoIndex + 1)) {
+                            return true;  // Found a solution
+                        }
+                        removePiece(field, pieceToPlace, x, y);  // Backtrack
+                    }
+                }
+            }
+        }
+        return false;  // Couldn't place this pentomino
+    }
+
+    private static boolean canPlace(int[][] field, int[][] piece, int x, int y) {
+        for (int i = 0; i < piece.length; i++) {
+            for (int j = 0; j < piece[i].length; j++) {
+                if (piece[i][j] == 1 && (x + i >= horizontalGridSize || y + j >= verticalGridSize || field[x + i][y + j] != -1)) {
+                    return false;  // Piece goes out of bounds or overlaps another piece
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void removePiece(int[][] field, int[][] piece, int x, int y) {
+        for (int i = 0; i < piece.length; i++) {
+            for (int j = 0; j < piece[i].length; j++) {
+                if (piece[i][j] == 1) {
+                    field[x + i][y + j] = -1;  // Remove the piece
+                }
+            }
+        }
     }
 	
 	/**
@@ -75,88 +115,6 @@ public class Search
     	return pentID;
     }
 	
-	/**
-	 * Basic implementation of a search algorithm. It is not a bruto force algorithms (it does not check all the posssible combinations)
-	 * but randomly takes possible combinations and positions to find a possible solution.
-	 * The solution is not necessarily the most efficient one
-	 * This algorithm can be very time-consuming
-	 * @param field a matrix representing the board to be fulfilled with pentominoes
-	 */
-    private static void basicSearch(int[][] field){
-    	Random random = new Random();
-    	boolean solutionFound = false;
-		int count = 0;
-    	while (!solutionFound) {
-			System.out.println(count++);
-    		solutionFound = true;
-    		
-    		//Empty board again to find a solution
-			for (int i = 0; i < field.length; i++) {
-				for (int j = 0; j < field[i].length; j++) {
-					field[i][j] = -1;
-				}
-			}
-    		
-    		//Put all pentominoes with random rotation/flipping on a random position on the board
-    		for (int i = 0; i < input.length; i++) {
-    			
-    			//Choose a pentomino and randomly rotate/flip it
-    			int pentID = characterToID(input[i]);
-    			int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
-    			int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
-    		
-    			//Randomly generate a position to put the pentomino on the board
-    			int x;
-    			int y;
-    			if (horizontalGridSize < pieceToPlace.length) {
-    				//this particular rotation of the piece is too long for the field
-    				x=-1;
-    			} else if (horizontalGridSize == pieceToPlace.length) {
-    				//this particular rotation of the piece fits perfectly into the width of the field
-    				x = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				x = random.nextInt(horizontalGridSize-pieceToPlace.length+1);
-    			}
-
-    			if (verticalGridSize < pieceToPlace[0].length) {
-    				//this particular rotation of the piece is too high for the field
-    				y=-1;
-    			} else if (verticalGridSize == pieceToPlace[0].length) {
-    				//this particular rotation of the piece fits perfectly into the height of the field
-    				y = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				y = random.nextInt(verticalGridSize-pieceToPlace[0].length+1);
-    			}
-    		
-    			//If there is a possibility to place the piece on the field, do it
-    			if (x >= 0 && y >= 0) {
-	    			addPiece(field, pieceToPlace, pentID, x, y);
-	    		} 
-    		}
-    		//Check whether complete field is filled
-
-			// draft 1
-			for (int i = 0; i < field.length; i++) {
-				for (int j = 0; j < field[i].length; j++) {
-					if (field[i][j] == -1) {
-						solutionFound = false;
-					}
-				}
-			}
-
-    		
-    		if (solutionFound) {
-    			//display the field
-    			ui.setState(field); 
-    			System.out.println("Solution found");
-    			break;
-    		}
-    	}
-    }
-
-    
 	/**
 	 * Adds a pentomino to the position on the field (overriding current board at that position)
 	 * @param field a matrix representing the board to be fulfilled with pentominoes
