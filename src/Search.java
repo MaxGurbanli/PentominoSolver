@@ -20,6 +20,8 @@ public class Search {
     // Map to get pentomino ID in constant time
     private static final Map<Character, Integer> pentIDMap = new HashMap<>();
 
+    // Initialize the map
+    // This is used for constant time access to the pentomino ID
     static {
         pentIDMap.put('X', 0);
         pentIDMap.put('I', 1);
