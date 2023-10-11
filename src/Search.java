@@ -137,10 +137,20 @@ private static boolean hasDeadSpot(int[][] field) {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("Enter the horizontal grid size:");
-        horizontalGridSize = Integer.parseInt(scanner.nextLine());
+        try {
+            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please re-enter.");
+            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+        }
 
         System.out.println("Enter the vertical grid size:");
-        verticalGridSize = Integer.parseInt(scanner.nextLine());
+        try {
+            verticalGridSize = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please re-enter.");
+            verticalGridSize = Integer.parseInt(scanner.nextLine());
+        }
 
         while (horizontalGridSize * verticalGridSize % 5 != 0) {
             System.out.println("The total grid size must be a multiple of 5. Please re-enter.");
@@ -154,6 +164,8 @@ private static boolean hasDeadSpot(int[][] field) {
 
         System.out.println("Enter pentomino letters separated by commas (e.g., X, U, I):");
         String inputStr = scanner.nextLine();
+        inputStr = inputStr.toUpperCase();
+
         List<String> lettersList = Arrays.asList(inputStr.split(","));
         input = new char[lettersList.size()];
 
