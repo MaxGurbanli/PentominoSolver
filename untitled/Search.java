@@ -55,7 +55,6 @@ public class Search
         }
         //Start the basic search
 //        basicSearch(field);
-		long startTime = System.currentTimeMillis();
 		recursiveSearch(field, 0);
     }
 
