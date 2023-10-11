@@ -32,7 +32,19 @@ Link to the task issue board: [Task Board](https://gitlab.maastrichtuniversity.n
 
 ## Tasks & ideas log
 
--
+### Max, 10/10/2023
+Issue encountered:
+- Implicitly asigning IDs for pentominoes resulted in U being printed as a Z
+Solution:
+- Explicit ID assignment for pentominoes, inserting the correct ID for each pentomino into the map
+
+### Max, 11/10/2023
+Issue encountered:
+- Manually inputting grid size and pentomino letters rather than hard-coding these values
+Solution:
+- Created method getInput for validating user input
+- Checks for valid grid sizes (multiples of 5)
+- Check for valid input letters (must fit within grid size)
 
 ## Pentominoes Database
 
@@ -58,3 +70,7 @@ Shape:
 X 0 0
 X X X
 0 0 X
+
+## Sources
+https://puzzler.sourceforge.net/docs/pentominoes.html
+https://isomerdesign.com/Pentomino/
