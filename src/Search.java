@@ -4,22 +4,14 @@ import java.util.Map;
 // Brute-force backtracking algorithm with optimizations
 // Made by: Max Gurbanli
 // Sources used: ChatGPT
-// Optimizations: Dead spot detection, early termination, and mutation order
+// Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
 
-/**
- * This class represents a search algorithm for solving the pentominoes puzzle.
- * It contains methods for backtracking search, checking if a pentomino can be placed in a certain position,
- * adding and removing a pentomino from the board, and checking for dead spots.
- * The class also includes a static UI object for displaying the board and a main method for running the search.
- * The pentominoes are represented by characters in the input array, and their IDs are stored in a map for constant time access.
- * The horizontal and vertical grid sizes are also stored as constants.
- */
 public class Search {
-    public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 3;
+    public static final int horizontalGridSize = 3;
+    public static final int verticalGridSize = 20;
 
     // Pentominoes for the input
-    public static final char[] input = {'U', 'X', 'U'};
+    public static final char[] input = {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
 
     // Map to get pentomino ID in constant time
     private static final Map<Character, Integer> pentIDMap = new HashMap<>();
@@ -86,9 +78,8 @@ public class Search {
     }
 
 private static boolean hasDeadSpot(int[][] field) {
-    // Check for dead spots in the field.
+    // Check for dead spots in the field. If there are, skip this branch of the search tree.
     // This is a naive approach that checks for single empty cells surrounded by other cells or boundaries.
-    // More sophisticated checks can be added as needed.
     for (int i = 0; i < field.length; i++) {
         for (int j = 0; j < field[i].length; j++) {
             if (field[i][j] == -1) {
@@ -104,6 +95,7 @@ private static boolean hasDeadSpot(int[][] field) {
     return false;
 }
 
+    // Check if a piece can be placed at a given position
     private static boolean canPlace(int[][] field, int[][] piece, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
             for (int j = 0; j < piece[i].length; j++) {
@@ -115,6 +107,7 @@ private static boolean hasDeadSpot(int[][] field) {
         return true;
     }
 
+    // Remove a piece from the board
     private static void removePiece(int[][] field, int[][] piece, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
             for (int j = 0; j < piece[i].length; j++) {
@@ -125,6 +118,7 @@ private static boolean hasDeadSpot(int[][] field) {
         }
     }
 
+    // Add a piece to the board
     public static void addPiece(int[][] field, int[][] piece, int pieceID, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
             for (int j = 0; j < piece[i].length; j++) {
