@@ -1,0 +1,40 @@
+1. field = the grid (horizontal and vertical length --> int[][])
+
+Optimised Search Algo Parameters: field, pentominoIndex, UI
+
+2. IF pentominoIndex == input.length:
+    RETURN true (as last pentomino has been placed)
+
+3. Get the ID (integer) of the pentomino (0 = 'X', 1 = 'I', ...) ==> pentID
+
+4. 
+- 1st FOR loop: 
+    for mutation in range(length of database) //goes through every pentomino block in the database\\
+    int[][] pieceToPlace = (mutation number in the database, ie 2nd number in the database)
+
+    - 2nd FOR loop:
+        for x in range(horizontalGridSize - pieceToPlace.length) //x position in field\\
+
+        - 3de FOR loop:
+            for y in range(verticalGridSize - pieceToPlace.length) //y position in field\\
+            CALL canPlace(field, pieceToPlace, x, y)
+
+            IF canPlace returns True:
+            CALL addPiece(field, pieceToPlace, pentID, x, y)
+            **update UI**
+
+
+            CALL hasDeadSpot(field) //checks if there is a singular tile that is surrounded by the grid walls or by other blocks\\
+            RECURSION! with Parameters: field, pentominoIndex, UI
+
+            IF hasDeadSpot == false AND RECURSION! == true:
+                return true //Solution found!\\
+            
+            ELSE:
+                CALL removePiece(field, pieceToPlace, x, y)
+                    
+5. RETURN false //no solution was found in the for loops\\
+
+            
+
+
