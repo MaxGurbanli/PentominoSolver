@@ -3,9 +3,7 @@
  * @version 2022.0
  */
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+ import java.util.Random;
 
 /**
  * This class includes the methods to support the search of a solution.
@@ -13,38 +11,20 @@ import java.util.Scanner;
 public class Search
 {
     public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 3;
-
-	public static boolean[][][][] bigmemo;
+    public static final int verticalGridSize = 12;
     
-//     public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F', 'P', 'V'};
-	public static ArrayList<Character> input = new ArrayList<>();
-	//	public static final char[] input = {'X','I','Z','T', 'U','V','W','Y','L','P','N','F'};
-//	public static final char[] input = {'F','N','P','L','Y','W','V','U','T','Z','I','X'};
+    // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F', 'P', 'V'};
+	public static final char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I'};
 
+    
     //Static UI class to display the board
     public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
-
 
 	/**
 	 * Helper function which starts a basic search algorithm
 	 */
     public static void search()
     {
-		getUserInput();
-
-		boolean[][][][] memoTable = new boolean[12][12][12][12];
-		// Initialize the memoization table with false values (not solved)
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
-				for (int k = 0; k < 12; k++) {
-					for (int l = 0; l < 12; l++) {
-						memoTable[i][j][k][l] = false;
-					}
-				}
-			}
-		}
-		bigmemo = memoTable;
         // Initialize an empty board
         int[][] field = new int[horizontalGridSize][verticalGridSize];
 
@@ -58,73 +38,9 @@ public class Search
             }
         }
         //Start the basic search
-//        basicSearch(field);
-		recursiveSearch(field, 0);
+        basicSearch(field);
     }
-
-	private static boolean recursiveSearch(int[][] field, int inputIndex) {
-		boolean solution = true;
-		if (inputIndex == input.size()){
-			inputIndex = 0;
-		}
-		for (int i = 0; i < field.length; i++) {
-			for (int j = 0; j < field[i].length; j++) {
-				if(field[i][j] == -1)
-					solution = false;
-			}
-		}
-		if (solution){
-			ui.setState(field);
-			return true;
-		}
-		int pentID = characterToID(input.get(inputIndex));
-		int mutation = PentominoDatabase.data[pentID].length;
-		for (int i = 0; i < mutation; i++) {
-			int[][] piece = PentominoDatabase.data[pentID][i];
-			for (int j = 0; j < field.length; j++) {
-				for (int k = 0; k < field[j].length; k++) {
-					if (canPlace(field, piece, j, k)) {
-						if (isSolved(pentID,mutation,j,k))
-							return true;
-						addPiece(field, piece, pentID, j, k);
-						memoize(pentID, i, j, k, true);
-						ui.setState(field);
-						if (recursiveSearch(field, inputIndex + 1)) {
-							return true;
-						}
-						removePiece(field, piece, j, k);
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean isSolved(int pentID, int mutation, int row, int col) {
-		// Check if a state has been memoized (solved)
-		return bigmemo[pentID][mutation][row][col];
-	}
-
-	public static void memoize(int pentID, int mutation, int row, int col, boolean solved) {
-		// Store the result of solving a state in the memoization table
-		bigmemo[pentID][mutation][row][col] = solved;
-	}
-
-	public static void getUserInput() {
-		Scanner reader = new Scanner(System.in);
-		char c = 0;
-		int index = 0;
-		while (reader.hasNext() && index < 12){
-			String ok = reader.next().toUpperCase().trim();
-			if (ok.equals("END"))
-				break;
-			c = ok.trim().charAt(0);
-			input.add(c);
-			index++;
-		}
-		System.out.println("end");
-	}
-
+	
 	/**
 	 * Get as input the character representation of a pentomino and translate it into its corresponding numerical value (ID)
 	 * @param character a character representating a pentomino
@@ -182,10 +98,10 @@ public class Search
 			}
     		
     		//Put all pentominoes with random rotation/flipping on a random position on the board
-    		for (int i = 0; i < input.size(); i++) {
+    		for (int i = 0; i < input.length; i++) {
     			
     			//Choose a pentomino and randomly rotate/flip it
-    			int pentID = characterToID(input.get(i));
+    			int pentID = characterToID(input[i]);
     			int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
     			int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
     		
@@ -263,45 +179,6 @@ public class Search
             }
         }
     }
-
-	public static boolean canPlace(int[][] field, int[][] pentominoe, int row, int col) {
-		// Get the dimensions
-		int boardHeight = field.length;
-		int boardWidth = field[0].length;
-
-		int PentHeight = pentominoe.length;
-		int PentWidth = pentominoe[0].length;
-
-		// Check if the shape exceeds the boundaries of the board
-		if (row + PentHeight > boardHeight || col + PentWidth > boardWidth) {
-			return false;
-		}
-
-		// Check for collisions
-		for (int i = 0; i < PentHeight; i++) {
-			for (int j = 0; j < PentWidth; j++) {
-				if (pentominoe[i][j] == 1 && field[row + i][col + j] != -1) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public static void removePiece(int[][] field, int[][] piece, int row, int col) {
-		int PentHeight = piece.length;
-		int PentWidth = piece[0].length;
-
-		for (int i = 0; i < PentHeight; i++) {
-			for (int j = 0; j < PentWidth; j++) {
-				if (piece[i][j] == 1) {
-					field[row + i][col + j] = -1;
-				}
-			}
-		}
-	}
-
-
 
 	/**
 	 * Main function. Needs to be executed to start the basic search algorithm
