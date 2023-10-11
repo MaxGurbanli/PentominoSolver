@@ -1,17 +1,21 @@
-import java.util.HashMap;
-import java.util.Map;
-
 // Brute-force backtracking algorithm with optimizations
 // Made by: Max Gurbanli
 // Sources used: ChatGPT
 // Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
 
-public class Search {
-    public static final int horizontalGridSize = 3;
-    public static final int verticalGridSize = 20;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-    // Pentominoes for the input
-    public static final char[] input = {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
+
+public class Search {
+
+    public static int horizontalGridSize;
+    public static int verticalGridSize;
+    public static char[] input;
+
 
     // Map to get pentomino ID in constant time
     private static final Map<Character, Integer> pentIDMap = new HashMap<>();
@@ -32,7 +36,7 @@ public class Search {
     }
 
     // Static UI class to display the board
-    public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+    public static UI ui;
 
     public static void search() {
         int[][] field = new int[horizontalGridSize][verticalGridSize];
@@ -42,7 +46,7 @@ public class Search {
             }
         }
         long startTime = System.currentTimeMillis();
-        boolean solutionFound = backtrackSearch(field, 0, ui);
+        boolean solutionFound = optimizedRecursiveSearch(field, 0, ui);
         long endTime = System.currentTimeMillis();
         if (solutionFound) {
             System.out.println("Solution found");
@@ -52,7 +56,7 @@ public class Search {
         System.out.println("Time taken: " + (endTime - startTime) + " ms");
     }
 
-    private static boolean backtrackSearch(int[][] field, int pentominoIndex, UI ui) {
+    private static boolean optimizedRecursiveSearch(int[][] field, int pentominoIndex, UI ui) {
         if (pentominoIndex == input.length) {
             return true;  // All pentominoes have been placed successfully
         }
@@ -66,7 +70,7 @@ public class Search {
                     if (canPlace(field, pieceToPlace, x, y)) {
                         addPiece(field, pieceToPlace, pentID, x, y);
                         ui.setState(field);
-                        if (!hasDeadSpot(field) && backtrackSearch(field, pentominoIndex + 1, ui)) {
+                        if (!hasDeadSpot(field) && optimizedRecursiveSearch(field, pentominoIndex + 1, ui)) {
                             return true;  // Found a solution
                         }
                         removePiece(field, pieceToPlace, x, y);  // Backtrack
@@ -128,8 +132,57 @@ private static boolean hasDeadSpot(int[][] field) {
             }
         }
     }
+    
+    public static void getUserInput() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter the horizontal grid size:");
+        horizontalGridSize = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Enter the vertical grid size:");
+        verticalGridSize = Integer.parseInt(scanner.nextLine());
+
+        while (horizontalGridSize * verticalGridSize % 5 != 0) {
+            System.out.println("The total grid size must be a multiple of 5. Please re-enter.");
+            
+            System.out.println("Enter the horizontal grid size:");
+            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+
+            System.out.println("Enter the vertical grid size:");
+            verticalGridSize = Integer.parseInt(scanner.nextLine());
+        }
+
+        System.out.println("Enter pentomino letters separated by commas (e.g., X, U, I):");
+        String inputStr = scanner.nextLine();
+        List<String> lettersList = Arrays.asList(inputStr.split(","));
+        input = new char[lettersList.size()];
+
+        // Ensure that the letters are valid and will fit on the board perfectly
+        while (lettersList.size() != horizontalGridSize * verticalGridSize / 5) {
+            System.out.println("The number of pentominoes must be equal to the total grid size divided by 5. Please re-enter.");
+            
+            System.out.println("Enter pentomino letters separated by commas (e.g., X, U, I):");
+            inputStr = scanner.nextLine();
+            lettersList = Arrays.asList(inputStr.split(","));
+        }
+
+        for (int i = 0; i < lettersList.size(); i++) {
+            input[i] = lettersList.get(i).trim().toUpperCase().charAt(0);
+        }
+
+        scanner.close();
+
+        ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        
+    }
 
     public static void main(String[] args) {
+        getUserInput();
+        // TESTING CODE
+        // horizontalGridSize = 6;
+        // verticalGridSize = 10;
+        // input = new char[] {'X', 'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F'};
+        // ui = new UI(horizontalGridSize, verticalGridSize, 50);
         search();
     }
 }
