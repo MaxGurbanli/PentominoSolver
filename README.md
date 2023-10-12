@@ -14,7 +14,12 @@ of pentominoes to maximize space utilization.
 
 ## Running the project and contributing
 
-- [ ] Complete this section
+- Clone the reopsitory on your local machine
+- Run the main function on any of the Search algorithms:
+  - [BasicSearch](/src/BasicSearch.java)
+  - [BacktrackingSearch](/src/BacktrackingSearch.java)
+  - [OptimizedSearch](/src/OptimizedBacktrackingSearch.java)
+  - [MoreOptimizedSearch](/src/MoreOptimizedBacktrackingSearch.java)
 
 ## Authors
 
@@ -33,21 +38,27 @@ Link to the task issue board: [Task Board](https://gitlab.maastrichtuniversity.n
 ## Tasks & ideas log
 
 ### Irdi, 10/12/2023
-Issue: 
+
+Issue:
+
 - We needed better efficency and faster solutions.
-Solution:
+  Solution:
 - Implemented Knuth's Algorithm X for our particular case of the Exact Cover Problem.
 
 ### Max, 10/10/2023
+
 Issue encountered:
+
 - Implicitly asigning IDs for pentominoes resulted in U being printed as a Z
-Solution:
+  Solution:
 - Explicit ID assignment for pentominoes, inserting the correct ID for each pentomino into the map
 
 ### Max, 11/10/2023
+
 Issue encountered:
+
 - Manually inputting grid size and pentomino letters rather than hard-coding these values
-Solution:
+  Solution:
 - Created method getInput for validating user input
 - Checks for valid grid sizes (multiples of 5)
 - Check for valid input letters (must fit within grid size)
@@ -83,7 +94,7 @@ Link to Back-Tracking Optimized Search Algorithm: [BackTrackingOptimizedSearch](
 
 Link to Back-Tracking Search Algorithm: [BackTrackingSearch](https://docs.google.com/document/d/1QUhCzTZASHgzQBXHoYxiuWhmx9RlNDJkyV1RkCMT9Ic/edit?usp=sharing)
 
-
 ## Sources
-https://puzzler.sourceforge.net/docs/pentominoes.html
-https://isomerdesign.com/Pentomino/
+
+- https://puzzler.sourceforge.net/docs/pentominoes.html
+- https://isomerdesign.com/Pentomino/
