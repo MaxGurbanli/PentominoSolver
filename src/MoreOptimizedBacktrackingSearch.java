@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BacktrackingOptimizedSearch {
+public class MoreOptimizedBacktrackingSearch {
 
     public static int horiGridSize;
     public static int vertGridSize;
