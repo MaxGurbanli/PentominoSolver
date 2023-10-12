@@ -80,12 +80,15 @@ public class AlgorithmTesting {
                                         (endTime - startTime));
 
                 }
+                writer.close();
         }
 
         public static void writeToFile(String algorithm, int pentominoWidth, int pentominoHeight,
                         int pentominoCount, long solvingTime) {
                 writer.print(algorithm + "," + pentominoWidth + "," + pentominoHeight + "," + pentominoCount
                                 + "," + solvingTime);
+                writer.println();
+                writer.flush();
         }
 
 }
