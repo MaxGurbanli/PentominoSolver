@@ -1,5 +1,5 @@
 // Brute-force backtracking algorithm with optimizations
-// Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
+// Optimizations: Recursive backtrack search, dead spot detection, constant time access to pentomino IDs
 // Made by: Max Gurbanli
 
 import java.util.Arrays;
