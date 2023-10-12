@@ -71,6 +71,13 @@ X 0 0
 X X X
 0 0 X
 
+## Pseudocodes
+
+Link to Back-Tracking Optimized Search Algorithm: [BackTrackingOptimizedSearch](https://docs.google.com/document/d/1wwk5FOKyLLafBVtT9_tLXfCmRmyiZxNemiu4MnZcsXg/edit?usp=sharing)
+
+Link to Back-Tracking Search Algorithm: [BackTrackingSearch](https://docs.google.com/document/d/1QUhCzTZASHgzQBXHoYxiuWhmx9RlNDJkyV1RkCMT9Ic/edit?usp=sharing)
+
+
 ## Sources
 https://puzzler.sourceforge.net/docs/pentominoes.html
 https://isomerdesign.com/Pentomino/
