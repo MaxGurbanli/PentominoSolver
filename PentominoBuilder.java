@@ -3,8 +3,7 @@
  * @version 2022.0
  */
 
- import java.io.FileNotFoundException;
-//import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -75,31 +74,35 @@ public class PentominoBuilder {
                     {1,1}
             },
             {
-        		// Implement pentomino representation P
-                {1,1},
-                {1,1},
-                {1,0}
+            	//
+        		//
+        		// TODO: Implement pentomino representation P
+                    {1,1},
+                    {1,1},
+                    {1,0}
+        		//
+        		//
             },
             {
             	//
         		//
-        		// pentomino representation N
+        		// TODO: Implement pentomino representation N
+                    {0,1},
+                    {0,1},
+                    {1,1},
+                    {1,0}
+                    //
         		//
-        		//
-                {0,1},
-                {0,1},
-                {1,1},
-                {1,0}
             },
             {
             	//
         		//
-        		// pentomino representation F
+        		// TODO: Implement pentomino representation F
+                    {0,1,1},
+                    {1,1,0},
+                    {0,1,0}
+                    //
         		//
-        		//
-                {0,1,1},
-                {1,1,0},
-                {0,1,0}
             }
     };
 
@@ -287,7 +290,7 @@ public class PentominoBuilder {
 
         //the amount of columns it needs to make empty after moving up
         amountToCut=0;
-        //do it for the the amount of columns there are to be sure
+        //do it for the amount of columns there are to be sure
         for(int i=0;i<data.length;i++)
         {
             //check if the first column is empty
@@ -382,18 +385,12 @@ public class PentominoBuilder {
      */
     public static boolean isEqual(int[][] data1, int[][] data2)
     {
-    	
-        //check all elements
-        for (int i = 0; i < data1.length; i++) {
-            for (int j = 0; j < data1[i].length; j++)
-            {
-                if(data1[i][j]!=data2[i][j])
-                {
+        for (int row = 0; row < data1.length; row++){
+            for (int col = 0; col < data1[0].length; col++){
+                if (data1[row][col] != data2[row][col])
                     return false;
-                }
             }
         }
-
         return true;
     }
 

@@ -108,6 +108,7 @@ public class PentominoDatabase
             {
                 System.out.print(i + "," + j + "," + data[i][j].length + "," + data[i][j][0].length);
 
+                System.out.print("Fourth Array: ");
                 for(int k = 0; k < data[i][j].length; k++)
                 {
                     for(int l = 0; l < data[i][j][k].length; l++)
