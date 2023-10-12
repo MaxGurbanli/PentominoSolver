@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Search {
+public class BackTrackingOptimizedSearch {
 
     public static int horizontalGridSize;
     public static int verticalGridSize;
