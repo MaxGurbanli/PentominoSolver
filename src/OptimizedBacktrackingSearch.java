@@ -249,13 +249,14 @@ public class OptimizedBacktrackingSearch {
      * Main function. Needs to be executed to start the search algorithm
      */
     public static void main(String[] args) {
-        // getUserInput();
         // TESTING CODE
         OptimizedBacktrackingSearch search = new OptimizedBacktrackingSearch();
-        search.horiGridSize = 5;
-        search.vertGridSize = 12;
-        search.input = new char[] { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F' };
-        search.ui = new UI(search.horiGridSize, search.vertGridSize, 50);
+        search.getUserInput();
+        // search.horiGridSize = 5;
+        // search.vertGridSize = 12;
+        // search.input = new char[] { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P',
+        // 'N', 'F' };
+        // search.ui = new UI(search.horiGridSize, search.vertGridSize, 50);
         System.out.println("Starting search...");
         search.search();
     }
