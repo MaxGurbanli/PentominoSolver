@@ -1,4 +1,4 @@
-SOURCES:
+SOURCES: <br>
 https://arxiv.org/pdf/cs/0011047.pdf <br>
 https://en.wikipedia.org/wiki/Pentomino <br>
 https://www.codeproject.com/Articles/271634/Puzzle-Solver <br>
