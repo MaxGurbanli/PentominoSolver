@@ -32,6 +32,12 @@ Link to the task issue board: [Task Board](https://gitlab.maastrichtuniversity.n
 
 ## Tasks & ideas log
 
+### Irdi, 10/12/2023
+Issue: 
+- We needed better efficency and faster solutions.
+Solution:
+- Implemented Knuth's Algorithm X for our particular case of the Exact Cover Problem.
+
 ### Max, 10/10/2023
 Issue encountered:
 - Implicitly asigning IDs for pentominoes resulted in U being printed as a Z
