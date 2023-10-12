@@ -10,20 +10,18 @@ import java.util.Random;
  * This class includes the methods to support the search of a solution.
  */
 public class BasicSearch {
-    public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 12;
+    public int horizontalGridSize;
+    public int verticalGridSize;
+    public UI ui;
 
     // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F',
     // 'P', 'V'};
-    public static final char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I' };
-
-    // Static UI class to display the board
-    public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+    public char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I' };
 
     /**
      * Helper function which starts a basic search algorithm
      */
-    public static void search() {
+    public void search() {
         // Initialize an empty board
         int[][] field = new int[horizontalGridSize][verticalGridSize];
 
@@ -85,7 +83,7 @@ public class BasicSearch {
      * 
      * @param field a matrix representing the board to be fulfilled with pentominoes
      */
-    private static void basicSearch(int[][] field) {
+    private void basicSearch(int[][] field) {
         Random random = new Random();
         boolean solutionFound = false;
 
@@ -191,6 +189,12 @@ public class BasicSearch {
      * Main function. Needs to be executed to start the basic search algorithm
      */
     public static void main(String[] args) {
-        search();
+        BasicSearch search = new BasicSearch();
+        search.horizontalGridSize = 5;
+        search.verticalGridSize = 6;
+        // Static UI class to display the board
+        search.ui = new UI(search.horizontalGridSize, search.verticalGridSize, 50);
+        search.search();
+
     }
 }
