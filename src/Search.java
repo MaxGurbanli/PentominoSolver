@@ -83,24 +83,30 @@ public class Search {
         return false;  // Couldn't place this pentomino
     }
 
-private static boolean hasDeadSpot(int[][] field) {
-    // Check for dead spots in the field. If there are, skip this branch of the search tree.
-    // This is a naive approach that checks for single empty cells surrounded by other cells or boundaries.
-    for (int i = 0; i < field.length; i++) {
-        for (int j = 0; j < field[i].length; j++) {
-            if (field[i][j] == -1) {
-                if ((i == 0 || field[i - 1][j] != -1) &&
-                    (i == field.length - 1 || field[i + 1][j] != -1) &&
-                    (j == 0 || field[i][j - 1] != -1) &&
-                    (j == field[i].length - 1 || field[i][j + 1] != -1)) {
-                    return true;  // Dead spot found
+    private static boolean hasDeadSpot(int[][] field) {
+        boolean[][] visited = new boolean[field.length][field[0].length];
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (field[i][j] == -1 && !visited[i][j]) {
+                    int size = floodFill(field, i, j, visited);
+                    if (size % 5 != 0) {
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
-    return false;
-}
-
+    
+    private static int floodFill(int[][] field, int i, int j, boolean[][] visited) {
+        if (i < 0 || i >= field.length || j < 0 || j >= field[0].length || visited[i][j] || field[i][j] != -1) {
+            return 0;
+        }
+        visited[i][j] = true;
+        return 1 + floodFill(field, i + 1, j, visited) + floodFill(field, i - 1, j, visited) +
+               floodFill(field, i, j + 1, visited) + floodFill(field, i, j - 1, visited);
+    }
+    
     // Check if a piece can be placed at a given position
     private static boolean canPlace(int[][] field, int[][] piece, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
@@ -191,12 +197,16 @@ private static boolean hasDeadSpot(int[][] field) {
     }
 
     public static void main(String[] args) {
-        getUserInput();
+        // getUserInput();
         // TESTING CODE
-        // horizontalGridSize = 6;
-        // verticalGridSize = 10;
-        // input = new char[] {'X', 'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F'};
-        // ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        // horizontalGridSize = 22;
+        // verticalGridSize = 5;
+        // input = new char[] {'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F', 'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F'};
+        // input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
+        horizontalGridSize = 6;
+        verticalGridSize = 5;
+        ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        System.out.println("Starting search...");
         search();
     }
 }
