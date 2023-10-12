@@ -1,7 +1,8 @@
-// Brute-force backtracking algorithm with optimizations
-// Made by: Max Gurbanli
-// Sources used: ChatGPT
-// Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
+
+/**
+ * @author Department of Data Science and Knowledge Engineering (DKE)
+ * @version 2022.0
+ */
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 /**
  * This class includes the methods to support the search of a solution.
  */
-public class Search {
+public class BacktrackingSearch {
 	public static final int horizontalGridSize = 5;
 	public static final int verticalGridSize = 3;
 
@@ -47,8 +48,11 @@ public class Search {
 		bigmemo = memoTable;
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
+
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field[i].length; j++) {
+				// -1 in the state matrix corresponds to empty square
+				// Any positive number identifies the ID of the pentomino
 				field[i][j] = -1;
 			}
 		}
@@ -244,55 +248,6 @@ public class Search {
 		}
 	}
 
-	private static boolean optimizedRecursiveSearch(int[][] field, int pentominoIndex, UI ui) {
-		if (pentominoIndex == input.length) {
-			return true; // All pentominoes have been placed successfully
-		}
-
-		int pentID = pentIDMap.get(input[pentominoIndex]);
-
-		for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
-			int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
-			for (int x = 0; x <= horizontalGridSize - pieceToPlace.length; x++) {
-				for (int y = 0; y <= verticalGridSize - pieceToPlace[0].length; y++) {
-					if (canPlace(field, pieceToPlace, x, y)) {
-						addPiece(field, pieceToPlace, pentID, x, y);
-						ui.setState(field);
-						if (!hasDeadSpot(field) && optimizedRecursiveSearch(field, pentominoIndex + 1, ui)) {
-							return true; // Found a solution
-						}
-						removePiece(field, pieceToPlace, x, y); // Backtrack
-					}
-				}
-			}
-		}
-		return false; // Couldn't place this pentomino
-	}
-
-	private static boolean hasDeadSpot(int[][] field) {
-		boolean[][] visited = new boolean[field.length][field[0].length];
-		for (int i = 0; i < field.length; i++) {
-			for (int j = 0; j < field[i].length; j++) {
-				if (field[i][j] == -1 && !visited[i][j]) {
-					int size = floodFill(field, i, j, visited);
-					if (size % 5 != 0) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	private static int floodFill(int[][] field, int i, int j, boolean[][] visited) {
-		if (i < 0 || i >= field.length || j < 0 || j >= field[0].length || visited[i][j] || field[i][j] != -1) {
-			return 0;
-		}
-		visited[i][j] = true;
-		return 1 + floodFill(field, i + 1, j, visited) + floodFill(field, i - 1, j, visited) +
-				floodFill(field, i, j + 1, visited) + floodFill(field, i, j - 1, visited);
-	}
-
 	/**
 	 * Adds a pentomino to the position on the field (overriding current board at
 	 * that position)
@@ -313,32 +268,6 @@ public class Search {
 					// Add the ID of the pentomino to the board if the pentomino occupies this
 					// square
 					field[x + i][y + j] = pieceID;
-				}
-			}
-		}
-	}
-
-	// TODO Choose canPlace function versiojn
-	// Check if a piece can be placed at a given position
-	private static boolean canPlace(int[][] field, int[][] piece, int x, int y) {
-		for (int i = 0; i < piece.length; i++) {
-			for (int j = 0; j < piece[i].length; j++) {
-				if (piece[i][j] == 1
-						&& (x + i >= horizontalGridSize || y + j >= verticalGridSize || field[x + i][y + j] != -1)) {
-					return false; // Piece goes out of bounds or overlaps another piece
-				}
-			}
-		}
-		return true;
-	}
-
-	// Remove a piece from the board
-	// TODO Choose removePiece function versiojn
-	private static void removePiece(int[][] field, int[][] piece, int x, int y) {
-		for (int i = 0; i < piece.length; i++) {
-			for (int j = 0; j < piece[i].length; j++) {
-				if (piece[i][j] == 1) {
-					field[x + i][y + j] = -1; // Remove the piece
 				}
 			}
 		}
