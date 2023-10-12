@@ -59,43 +59,47 @@ public class BacktrackingSearch {
 		// basicSearch(field);
 		recursiveSearch(field, 0);
 	}
-
+/*Recursive backtracking function that iterates over all available pentominoes and their mutations, attempts to place them on the grid, and uses recursion
+ to explore all the possible configurations. It takes the game grid and the index of the pentominoe as parameters, returns "true" if a solution has been found
+ and "false" otherwise. It uses the memoization table to keep track of states that have already been solved to avoid redundant work. When a dead end is reached,
+ it backtracks and continues to explore other possibilities. */
 	private static boolean recursiveSearch(int[][] field, int inputIndex) {
 		boolean solution = true;
 		if (inputIndex == input.size()) {
-			inputIndex = 0;
+			inputIndex = 0; // if inpitIndex has reached the end of the list, it is set back to 0 so it can cycle through all the available pentominoes.
 		}
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field[i].length; j++) {
 				if (field[i][j] == -1)
-					solution = false;
+					solution = false; /*Iterates through all grid cells to check if the value is equal to -1, meaning that the field is empty. If an empty 
+					field is found, the solution is set to "false", meaning no solution has been found.*/
 			}
 		}
 		if (solution) {
 			ui.setState(field);
-			return true;
+			return true; //If a solution has been found, the UI is updated accordingly and the method returns "true".
 		}
-		int pentID = characterToID(input.get(inputIndex));
-		int mutation = PentominoDatabase.data[pentID].length;
+		int pentID = characterToID(input.get(inputIndex)); //Retrieves the ID of a pentominoe.
+		int mutation = PentominoDatabase.data[pentID].length; //Retrieves the amount of possible mutations of a pentominoe.
 		for (int i = 0; i < mutation; i++) {
-			int[][] piece = PentominoDatabase.data[pentID][i];
+			int[][] piece = PentominoDatabase.data[pentID][i]; //Iterates through all mutations of a pentominoe and stores them in "piece".
 			for (int j = 0; j < field.length; j++) {
 				for (int k = 0; k < field[j].length; k++) {
-					if (canPlace(field, piece, j, k)) {
-						if (isSolved(pentID, mutation, j, k))
-							return true;
-						addPiece(field, piece, pentID, j, k);
-						memoize(pentID, i, j, k, true);
-						ui.setState(field);
-						if (recursiveSearch(field, inputIndex + 1)) {
-							return true;
+					if (canPlace(field, piece, j, k)) { //Calls the canPlace method to check if a piece can be placed in a given position
+						if (isSolved(pentID, mutation, j, k)) 
+							return true; //Calls the isSolved method to check if a state has been memoized, and returns "true" if it has.
+						addPiece(field, piece, pentID, j, k); //Calls the addPiece method to add a pentominoe to the grid.
+						memoize(pentID, i, j, k, true); //Memoizes the state as solved.
+						ui.setState(field); //Updates the UI.
+						if (recursiveSearch(field, inputIndex + 1)) { 
+							return true; /*Calls the recursiveSearch method recursively. Returns "true" if a solution has been found. */
 						}
-						removePiece(field, piece, j, k);
+						removePiece(field, piece, j, k); //If the recursive call doesn't return "true", the pentominoe is removed from the grid.
 					}
 				}
 			}
 		}
-		return false;
+		return false; //If no placement for the pentominoe is found and the state does not lead to a solution, the method returns "false".
 	}
 
 	public static boolean isSolved(int pentID, int mutation, int row, int col) {
@@ -112,13 +116,13 @@ public class BacktrackingSearch {
 		Scanner reader = new Scanner(System.in);
 		char c = 0;
 		int index = 0;
-		while (reader.hasNext() && index < 12) {
-			String ok = reader.next().toUpperCase().trim();
+		while (reader.hasNext() && index < 12) { // Enters a loop that continues as long as the user keeps entering input ans the index is smaller than 12.
+			String ok = reader.next().toUpperCase().trim(); // Reads the string "ok", converts it to uppercase and removes whitespaces.
 			if (ok.equals("END"))
-				break;
-			c = ok.trim().charAt(0);
-			input.add(c);
-			index++;
+				break; // The loop breaks if the user inputs "END"
+			c = ok.trim().charAt(0); // Extracts the first character from "ok"
+			input.add(c); // Adds "c" to the input array list
+			index++; // Increments the "index" variable when a character has been added.
 		}
 		System.out.println("end");
 		reader.close();
@@ -203,7 +207,8 @@ public class BacktrackingSearch {
 		for (int i = 0; i < PentHeight; i++) {
 			for (int j = 0; j < PentWidth; j++) {
 				if (pentominoe[i][j] == 1 && field[row + i][col + j] != -1) {
-					return false;
+					return false; /*If the field in the "pentominoe" array is equal to '1' (not empty), and its corresponding field in the "field" array
+					is not equal to '-1' (not empty), there is a collision. */
 				}
 			}
 		}
@@ -215,9 +220,10 @@ public class BacktrackingSearch {
 		int PentWidth = piece[0].length;
 
 		for (int i = 0; i < PentHeight; i++) {
-			for (int j = 0; j < PentWidth; j++) {
+			for (int j = 0; j < PentWidth; j++) { //Iterates over the rowns and columns of the "piece" array
 				if (piece[i][j] == 1) {
-					field[row + i][col + j] = -1;
+					field[row + i][col + j] = -1; /*Checks if the current field in "piece" has the value '1', meaning that it is occupied by a piece.
+					if that is the case, it changes the corresponding cell in the "field" array, meaning that it is now empty.*/ 
 				}
 			}
 		}
