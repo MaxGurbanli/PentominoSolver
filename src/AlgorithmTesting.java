@@ -43,13 +43,16 @@ public class AlgorithmTesting {
                         improvedSearch.vertGridSize = param.pentominoHeight;
                         improvedSearch.input = param.pentominoes;
 
+                        long startTime;
+                        long endTime;
+
                         // Test basic
-                        System.out.println("Testing basic");
-                        long startTime = System.currentTimeMillis();
-                        basic.search();
-                        long endTime = System.currentTimeMillis();
-                        writeToFile("basic", param.pentominoWidth, param.pentominoHeight, param.pentominoes.length,
-                                        (endTime - startTime));
+                        // System.out.println("Testing basic");
+                        // long startTime = System.currentTimeMillis();
+                        // basic.search();
+                        // long endTime = System.currentTimeMillis();
+                        // writeToFile("basic", param.pentominoWidth, param.pentominoHeight,
+                        // param.pentominoes.length,(endTime - startTime));
 
                         // Test backtracking
                         // startTime = System.currentTimeMillis();

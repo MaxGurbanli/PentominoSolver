@@ -84,7 +84,9 @@ public class MoreOptimizedBacktrackingSearch {
 
                         addPiece(field, pieceToPlace, pentominoID, x, y);
 
-                        ui.setState(field);
+                        if (ui != null) {
+                            ui.setState(field);
+                        }
 
                         if (!hasDeadSpot(field) && optimizedRecursiveSearch(field, pentominoIndex + 1, ui)) {
                             return true; // Found a solution
@@ -205,7 +207,9 @@ public class MoreOptimizedBacktrackingSearch {
                     // Add the ID of the pentomino to the board if the pentomino occupies this
                     // square
                     field[x + i][y + j] = pieceID;
-                    ui.setState(field);
+                    if (ui != null) {
+                        ui.setState(field);
+                    }
                 }
             }
         }
