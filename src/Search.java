@@ -197,15 +197,15 @@ public class Search {
     }
 
     public static void main(String[] args) {
-        // getUserInput();
+        getUserInput();
         // TESTING CODE
         // horizontalGridSize = 22;
         // verticalGridSize = 5;
         // input = new char[] {'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F', 'Y', 'Z', 'I', 'T', 'U', 'V', 'W', 'L', 'P', 'N', 'F'};
         // input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
-        horizontalGridSize = 6;
-        verticalGridSize = 5;
-        ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        // horizontalGridSize = 12;
+        // verticalGridSize = 5;
+        // ui = new UI(horizontalGridSize, verticalGridSize, 50);
         System.out.println("Starting search...");
         search();
     }
