@@ -1,8 +1,6 @@
-
 // Brute-force backtracking algorithm with optimizations
-// Made by: Max Gurbanli
-// Sources used: ChatGPT
 // Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
+// Made by: Max Gurbanli
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,68 +10,82 @@ import java.util.Map;
 
 public class BacktrackingOptimizedSearch {
 
-    public static int horizontalGridSize;
-    public static int verticalGridSize;
+    public static int horiGridSize;
+    public static int vertGridSize;
     public static char[] input;
 
-    // Map to get pentomino ID in constant time
-    private static final Map<Character, Integer> pentIDMap = new HashMap<>();
-
-    // Initialize the map
-    // This is used for constant time access to the pentomino ID
+    // This key-value store maps a pentomino letter to its ID
+    // This is used to get the ID of a pentomino in constant time compared to using if-else statements
+    private static final Map<Character, Integer> pentominoKeyToID = new HashMap<>();
     static {
-        pentIDMap.put('X', 0);
-        pentIDMap.put('I', 1);
-        pentIDMap.put('Z', 2);
-        pentIDMap.put('T', 3);
-        pentIDMap.put('U', 4);
-        pentIDMap.put('V', 5);
-        pentIDMap.put('W', 6);
-        pentIDMap.put('Y', 7);
-        pentIDMap.put('L', 8);
-        pentIDMap.put('P', 9);
-        pentIDMap.put('N', 10);
-        pentIDMap.put('F', 11);
+        pentominoKeyToID.put('X', 0);
+        pentominoKeyToID.put('I', 1);
+        pentominoKeyToID.put('Z', 2);
+        pentominoKeyToID.put('T', 3);
+        pentominoKeyToID.put('U', 4);
+        pentominoKeyToID.put('V', 5);
+        pentominoKeyToID.put('W', 6);
+        pentominoKeyToID.put('Y', 7);
+        pentominoKeyToID.put('L', 8);
+        pentominoKeyToID.put('P', 9);
+        pentominoKeyToID.put('N', 10);
+        pentominoKeyToID.put('F', 11);
     }
 
-    // Static UI class to display the board
+    // Create the UI object
     public static UI ui;
 
     public static void search() {
-        int[][] field = new int[horizontalGridSize][verticalGridSize];
+        int[][] field = new int[horiGridSize][vertGridSize];
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 field[i][j] = -1;
             }
         }
         long startTime = System.currentTimeMillis();
-        boolean solutionFound = optimizedRecursiveSearch(field, 0, ui);
+        boolean foundSolution = optimizedRecursiveSearch(field, 0, ui);
         long endTime = System.currentTimeMillis();
-        if (solutionFound) {
+        if (foundSolution) {
             System.out.println("Solution found");
         } else {
             System.out.println("No solution found");
         }
-        System.out.println("Time taken: " + (endTime - startTime) + " ms");
+        System.out.println("Found a solution in " + (endTime - startTime) + " ms");
     }
 
+    /**
+     * Performs an optimized recursive search.
+     * Iterates through all possible mutations of the pentomino and tries to place it on the field.
+     * Once a pentomino can be placed, the method recursively places the next pentomino.
+     * If a dead spot is found on the field, the method backtracks.
+     * 
+     * @param field a matrix representing the board to be fulfilled with pentominoes
+     * @param pentominoIndex the index of the pentomino to be placed
+     * @param ui the UI object
+     * @return true if a solution is found, false otherwise
+     */
     private static boolean optimizedRecursiveSearch(int[][] field, int pentominoIndex, UI ui) {
         if (pentominoIndex == input.length) {
-            return true; // All pentominoes have been placed successfully
+            return true; // all pentominos have been placed, the solution is found
         }
 
-        int pentID = pentIDMap.get(input[pentominoIndex]);
+        int pentominoID = pentominoKeyToID.get(input[pentominoIndex]);
 
-        for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
-            int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
-            for (int x = 0; x <= horizontalGridSize - pieceToPlace.length; x++) {
-                for (int y = 0; y <= verticalGridSize - pieceToPlace[0].length; y++) {
+        for (int mutation = 0; mutation < PentominoDatabase.data[pentominoID].length; mutation++) {
+            int[][] pieceToPlace = PentominoDatabase.data[pentominoID][mutation];
+
+            for (int x = 0; x <= horiGridSize - pieceToPlace.length; x++) {
+                for (int y = 0; y <= vertGridSize - pieceToPlace[0].length; y++) {
                     if (canPlace(field, pieceToPlace, x, y)) {
-                        addPiece(field, pieceToPlace, pentID, x, y);
+
+                        addPiece(field, pieceToPlace, pentominoID, x, y);
+
                         ui.setState(field);
+
                         if (!hasDeadSpot(field) && optimizedRecursiveSearch(field, pentominoIndex + 1, ui)) {
                             return true; // Found a solution
                         }
+                        
                         removePiece(field, pieceToPlace, x, y); // Backtrack
                     }
                 }
@@ -82,6 +94,13 @@ public class BacktrackingOptimizedSearch {
         return false; // Couldn't place this pentomino
     }
 
+    /**
+     * Checks if the given field has a dead spot, i.e. a region of empty cells that is not a multiple of 5 in size.
+     * Uses flood fill algorithm to count the size of each empty region.
+     * 
+     * @param field a matrix representing the game board
+     * @return true if the field has a dead spot, false otherwise
+     */
     private static boolean hasDeadSpot(int[][] field) {
         boolean[][] visited = new boolean[field.length][field[0].length];
         for (int i = 0; i < field.length; i++) {
@@ -97,6 +116,16 @@ public class BacktrackingOptimizedSearch {
         return false;
     }
 
+    /**
+     * Performs a flood fill algorithm on a 2D integer array, starting from the specified cell (i, j).
+     * Marks all cells that are reachable from the starting cell and have a value of -1.
+     *
+     * @param field   a matrix representing the game board
+     * @param i       the row index of the starting cell
+     * @param j       the column index of the starting cell
+     * @param visited a 2D boolean array representing which cells have already been visited
+     * @return the number of cells that were marked by the flood fill algorithm
+     */
     private static int floodFill(int[][] field, int i, int j, boolean[][] visited) {
         if (i < 0 || i >= field.length || j < 0 || j >= field[0].length || visited[i][j] || field[i][j] != -1) {
             return 0;
@@ -106,12 +135,19 @@ public class BacktrackingOptimizedSearch {
                 floodFill(field, i, j + 1, visited) + floodFill(field, i, j - 1, visited);
     }
 
-    // Check if a piece can be placed at a given position
+    /**
+     * Determines whether a given piece can be placed on the field at the specified position.
+     * @param field   a matrix representing the game board
+     * @param piece   a matrix representing the pentomino to be placed in the board
+     * @param x       x position of the pentomino
+     * @param y       y position of the pentomino
+     * @return true if the piece can be placed at the specified position, false otherwise
+     */
     private static boolean canPlace(int[][] field, int[][] piece, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
             for (int j = 0; j < piece[i].length; j++) {
                 if (piece[i][j] == 1
-                        && (x + i >= horizontalGridSize || y + j >= verticalGridSize || field[x + i][y + j] != -1)) {
+                        && (x + i >= horiGridSize || y + j >= vertGridSize || field[x + i][y + j] != -1)) {
                     return false; // Piece goes out of bounds or overlaps another piece
                 }
             }
@@ -119,23 +155,45 @@ public class BacktrackingOptimizedSearch {
         return true;
     }
 
-    // Remove a piece from the board
+    /**
+     * Removes a pentomino from the position on the field
+     * 
+     * @param field   a matrix representing the game board
+     * @param piece   a matrix representing the pentomino to be removed from the board
+     * @param pieceID ID of the relevant pentomino
+     * @param x       x position of the pentomino
+     * @param y       y position of the pentomino
+     */
     private static void removePiece(int[][] field, int[][] piece, int x, int y) {
         for (int i = 0; i < piece.length; i++) {
             for (int j = 0; j < piece[i].length; j++) {
                 if (piece[i][j] == 1) {
-                    field[x + i][y + j] = -1; // Remove the piece
+                    field[x + i][y + j] = -1;
                 }
             }
         }
     }
 
-    // Add a piece to the board
+    /**
+     * Adds a pentomino to the position on the field (overriding current board at
+     * that position)
+     * 
+     * @param field   a matrix representing the game board
+     * @param piece   a matrix representing the pentomino to be placed in the board
+     * @param pieceID ID of the relevant pentomino
+     * @param x       x position of the pentomino
+     * @param y       y position of the pentomino
+     */
     public static void addPiece(int[][] field, int[][] piece, int pieceID, int x, int y) {
-        for (int i = 0; i < piece.length; i++) {
-            for (int j = 0; j < piece[i].length; j++) {
+        for (int i = 0; i < piece.length; i++) // loop over x position of pentomino
+        {
+            for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
+            {
                 if (piece[i][j] == 1) {
+                    // Add the ID of the pentomino to the board if the pentomino occupies this
+                    // square
                     field[x + i][y + j] = pieceID;
+                    ui.setState(field);
                 }
             }
         }
@@ -146,28 +204,28 @@ public class BacktrackingOptimizedSearch {
 
         System.out.println("Enter the horizontal grid size:");
         try {
-            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+            horiGridSize = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please re-enter.");
-            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+            horiGridSize = Integer.parseInt(scanner.nextLine());
         }
 
         System.out.println("Enter the vertical grid size:");
         try {
-            verticalGridSize = Integer.parseInt(scanner.nextLine());
+            vertGridSize = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please re-enter.");
-            verticalGridSize = Integer.parseInt(scanner.nextLine());
+            vertGridSize = Integer.parseInt(scanner.nextLine());
         }
 
-        while (horizontalGridSize * verticalGridSize % 5 != 0) {
+        while (horiGridSize * vertGridSize % 5 != 0) {
             System.out.println("The total grid size must be a multiple of 5. Please re-enter.");
 
             System.out.println("Enter the horizontal grid size:");
-            horizontalGridSize = Integer.parseInt(scanner.nextLine());
+            horiGridSize = Integer.parseInt(scanner.nextLine());
 
             System.out.println("Enter the vertical grid size:");
-            verticalGridSize = Integer.parseInt(scanner.nextLine());
+            vertGridSize = Integer.parseInt(scanner.nextLine());
         }
 
         System.out.println("Enter pentomino letters separated by commas (e.g., X, U, I):");
@@ -178,7 +236,7 @@ public class BacktrackingOptimizedSearch {
         input = new char[lettersList.size()];
 
         // Ensure that the letters are valid and will fit on the board perfectly
-        while (lettersList.size() != horizontalGridSize * verticalGridSize / 5) {
+        while (lettersList.size() != horiGridSize * vertGridSize / 5) {
             System.out.println(
                     "The number of pentominoes must be equal to the total grid size divided by 5. Please re-enter.");
 
@@ -193,18 +251,20 @@ public class BacktrackingOptimizedSearch {
 
         scanner.close();
 
-        ui = new UI(horizontalGridSize, verticalGridSize, 60);
+        ui = new UI(horiGridSize, vertGridSize, 60);
 
     }
 
+    /**
+     * Main function. Needs to be executed to start the search algorithm
+     */
     public static void main(String[] args) {
-        getUserInput();
+        // getUserInput();
         // TESTING CODE
-        // input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N',
-        // 'F'};
-        // horizontalGridSize = 12;
-        // verticalGridSize = 5;
-        // ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
+        horiGridSize = 5;
+        vertGridSize = 12;
+        ui = new UI(horiGridSize, vertGridSize, 50);
         System.out.println("Starting search...");
         search();
     }
