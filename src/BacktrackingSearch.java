@@ -5,7 +5,6 @@
  */
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -122,6 +121,7 @@ public class BacktrackingSearch {
 			index++;
 		}
 		System.out.println("end");
+		reader.close();
 	}
 
 	/**
