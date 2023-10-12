@@ -259,12 +259,12 @@ public class MoreOptimizedBacktrackingSearch {
      * Main function. Needs to be executed to start the search algorithm
      */
     public static void main(String[] args) {
-        // getUserInput();
+        getUserInput();
         // TESTING CODE
-        input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
-        horiGridSize = 5;
-        vertGridSize = 12;
-        ui = new UI(horiGridSize, vertGridSize, 50);
+        // input = new char[] {'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'};
+        // horiGridSize = 5;
+        // vertGridSize = 12;
+        // ui = new UI(horiGridSize, vertGridSize, 50);
         System.out.println("Starting search...");
         search();
     }
