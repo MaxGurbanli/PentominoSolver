@@ -1,5 +1,5 @@
 // Brute-force backtracking algorithm with optimizations
-// Optimizations: Dead spot detection, early termination, mutation order, constant time access to pentomino IDs
+// Optimizations: Recursive backtrack search, dead spot detection, constant time access to pentomino IDs
 // Made by: Max Gurbanli
 
 import java.util.Arrays;
@@ -271,13 +271,14 @@ public class MoreOptimizedBacktrackingSearch {
      * Main function. Needs to be executed to start the search algorithm
      */
     public static void main(String[] args) {
-        // getUserInput();
         // TESTING CODE
         MoreOptimizedBacktrackingSearch search = new MoreOptimizedBacktrackingSearch();
-        search.horiGridSize = 5;
-        search.vertGridSize = 12;
-        search.input = new char[] { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F' };
-        search.ui = new UI(search.horiGridSize, search.vertGridSize, 50);
+        search.getUserInput();
+        // search.horiGridSize = 5;
+        // search.vertGridSize = 12;
+        // search.input = new char[] { 'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P',
+        // 'N', 'F' };
+        // search.ui = new UI(search.horiGridSize, search.vertGridSize, 50);
         System.out.println("Starting search...");
         search.search();
     }
