@@ -186,7 +186,7 @@ private static boolean hasDeadSpot(int[][] field) {
 
         scanner.close();
 
-        ui = new UI(horizontalGridSize, verticalGridSize, 50);
+        ui = new UI(horizontalGridSize, verticalGridSize, 60);
         
     }
 
