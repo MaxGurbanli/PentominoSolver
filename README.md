@@ -1,6 +1,6 @@
 # Pentominoes (Group 7)
 
-> Group 7, Phase 1, Version 0
+> Group 7, Phase 1, Version 0 <br>
 > Dancing Links approach can be found on its distinct branch.
 
 ## Purpose of the project
