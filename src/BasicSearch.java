@@ -9,14 +9,15 @@ import java.util.Random;
 /**
  * This class includes the methods to support the search of a solution.
  */
-public class BasicSearch {
-    public int horizontalGridSize;
-    public int verticalGridSize;
-    public UI ui;
+public class BasicSearch extends SearchAlgorithm {
 
     // public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'F',
     // 'P', 'V'};
     public char[] input = { 'P', 'T', 'X', 'U', 'L', 'V', 'N', 'W', 'Z', 'F', 'Y', 'I' };
+
+    public BasicSearch(int horizontalGridSize, int verticalGridSize) {
+        super(horizontalGridSize, verticalGridSize); 
+    }
 
     /**
      * Helper function which starts a basic search algorithm
