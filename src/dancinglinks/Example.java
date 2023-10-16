@@ -208,6 +208,7 @@ public class Example {
         int[][] example = makeSparseMatrix(pentominoes);
         DancingLinks DLX = new DancingLinks(example);
         DLX.runSolver();
+        scanner.close();
     }
 
     /**
