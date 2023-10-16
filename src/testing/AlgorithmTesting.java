@@ -1,6 +1,12 @@
+package testing;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+
+import search.BasicSearch;
+import search.MoreOptimizedBacktrackingSearch;
+import search.OptimizedBacktrackingSearch;
 
 public class AlgorithmTesting {
 

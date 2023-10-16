@@ -1,10 +1,16 @@
+package search;
 // Brute-force backtracking algorithm with optimizations
+
 // Optimizations: Recursive backtrack search, dead spot detection, constant time access to pentomino IDs
 // Made by: Max Gurbanli
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import common.UI;
+import pentominoes.PentominoDatabase;
+
 import java.util.HashMap;
 import java.util.Map;
 

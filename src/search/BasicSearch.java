@@ -1,3 +1,4 @@
+package search;
 
 /**
  * @author Department of Data Science and Knowledge Engineering (DKE)
@@ -5,6 +6,9 @@
  */
 
 import java.util.Random;
+
+import common.UI;
+import pentominoes.PentominoDatabase;
 
 /**
  * This class includes the methods to support the search of a solution.
