@@ -5,13 +5,9 @@
 
 ## Purpose of the project
 
-The central topic of Project 1-1 is to create a computer application with a user-friendly
-interface for solving the three-dimensional knapsack problem.
-Within the scope of this project, the main objective is the development and implemen-
-tation of a computer program using Java. The program's core functionality involves pop-
-ulating a predefined rectangular space with specific objects known as pentominoes. The
-initial phase of the project aims to create efficient algorithms that can arrange a given set
-of pentominoes to maximize space utilization.
+The central topic of Project 1-1 is to create a computer application with a user-friendly interface for solving the three-dimensional knapsack problem.
+Within the scope of this project, the main objective is the development and implementation of a computer program using Java. The program's core functionality involves populating a predefined rectangular space with specific objects known as pentominoes. The
+initial phase of the project aims to create efficient algorithms that can arrange a given set of pentominoes to maximize space utilization.
 
 ## Running the project and contributing
 
