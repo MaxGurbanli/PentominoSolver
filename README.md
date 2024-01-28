@@ -32,10 +32,6 @@ of pentominoes to maximize space utilization.
 - Irdi Zeneli
 - Zenios Zeniou
 
-## Task Board
-
-Link to the task issue board: [Task Board](https://gitlab.maastrichtuniversity.nl/bcs_group07_2023/pentominoes_phase_1/-/boards)
-
 ## Tasks & ideas log
 
 ### Irdi, 10/12/2023
